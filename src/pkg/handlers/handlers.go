@@ -1,4 +1,4 @@
-package app
+package handlers
 
 import (
 	"checklist/pkg/api"
@@ -14,7 +14,7 @@ func TestApi(w http.ResponseWriter, r *http.Request) {
 	w.WriteHeader(http.StatusOK)
 }
 
-func (app *App) AddNewItemHandler(w http.ResponseWriter, r *http.Request) {
+func AddNewItemHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -25,5 +25,8 @@ func (app *App) AddNewItemHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusInternalServerError)
 		return
 	}
-	app.AddNewItem(body)
+	// err = app.AddNewItem(body)
+	// if err != nil {
+	// 	log.Fatalf("err")
+	// }
 }

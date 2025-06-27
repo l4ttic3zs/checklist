@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checklist-deployment
+  namespace: checklist
+spec:
+  replicas: 1
+  revisionHistoryLimit: 1
+  selector:
+    matchLabels:
+      app: checklist-deployment
+  template:
+    metadata:
+      labels:
+        app: checklist-deployment
+    spec:
+      containers:
+      - name: checklist
+        image: bmzsombi/checklist:latest # Cseréld erre a Go alkalmazásod image-ére
+        env:
+          - name: DB_HOST
+            value: checklist-cluster-rw.cnpg-clusterc.svc.cluster.local # A CNPG Service neve
+          - name: DB_PORT
+            value: "5432" # Standard PostgreSQL port
+          - name: DB_NAME
+            value: YXBw # Az adatbázis neve, amit használni szeretnél (létre kell hoznod, ha még nincs)
+          - name: DB_USER
+            valueFrom:
+              secretKeyRef:
+                name: checklist-cluster-app # A Secret neve
+                key: username # A Secret kulcsa a felhasználónévhez
+          - name: DB_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: checklist-cluster-app # A Secret neve
+                key: password
+        resources:
+          requests:
+            cpu: "20m"
+            memory: "50Mi"
+          limits:
+            cpu: "50m"
+            memory: "100Mi"
