@@ -1,0 +1,15 @@
+kind: Service
+apiVersion: v1
+metadata:
+  name: checklist-service
+  namespace: checklist
+  annotations:
+    "lbipam.cilium.io/ips": "192.168.100.100"
+spec:
+  selector:
+    app:  checklist
+  type:  LoadBalancer
+  ports:
+  - name:  http
+    port:  80
+    targetPort:  8443
