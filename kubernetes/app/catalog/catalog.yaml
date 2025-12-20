@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checklist-catalog
+  namespace: checklist
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: checklist-catalog
+  template:
+    metadata:
+      labels:
+        app: checklist-catalog
+    spec:
+      containers:
+      - name: checklist-catalog
+        image: docker.io/bmzsombi/checklist-catalog:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "checklist-database-rw"
+        - name: DB_NAME
+          value: "checklist_db"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: checklist-database-app
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: checklist-database-app
+              key: password
+        volumeMounts:
+        - name: image-storage
+          mountPath: /app/uploads
+      volumes:
+      - name: image-storage
+        persistentVolumeClaim:
+          claimName: checklist-images-pvc

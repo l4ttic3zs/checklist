@@ -1,0 +1,17 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: checklist-database
+  namespace: checklist
+spec:
+  instances: 3
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 1Gi
+  bootstrap:
+    initdb:
+      database: checklist_db
+      owner: db_user
+      postInitSQL:
+        - CREATE TABLE IF NOT EXISTS items (id SERIAL PRIMARY KEY, name TEXT NOT NULL);
