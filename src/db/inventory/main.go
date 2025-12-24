@@ -46,7 +46,6 @@ func main() {
 
 func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
 	var items []api.Item
-	// A Preload("ItemType") feltölti az Item struct ItemType mezőjét a másik táblából
 	result := a.DB.Preload("ItemType").Find(&items)
 
 	if result.Error != nil {
