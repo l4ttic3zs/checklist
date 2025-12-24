@@ -21,11 +21,20 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
-      - name: Build and push
+      - name: Build and push catalog
         uses: docker/build-push-action@v5
         with:
           context: ./src/db/catalog/
           push: true
           tags: bmzsombi/checklist-catalog:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+      
+      - name: Build and push inventory
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/db/inventory/
+          push: true
+          tags: bmzsombi/checklist-inventory:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max

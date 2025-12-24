@@ -1,0 +1,11 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+resources:
+- cnpg/db.yaml
+
+- app/catalog/pvc.yaml
+- app/catalog/catalog.yaml
+- app/catalog/catalog-service.yaml
+
+- app/inventory/inventory.yaml
+- app/inventory/inventory-service.yaml
