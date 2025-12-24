@@ -2,13 +2,10 @@ package main
 
 import (
 	"catalog/api"
-	"encoding/json"
 	"fmt"
-	"io"
 	"log"
 	"net/http"
 	"os"
-	"time"
 
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
@@ -36,7 +33,7 @@ func main() {
 		log.Fatalf("Cannot connect to database: %v", err)
 	}
 
-	err = db.AutoMigrate(&api.Item{})
+	err = db.AutoMigrate(&api.ItemType{}, &api.Item{})
 	if err != nil {
 		log.Printf("Migration error: %v", err)
 	}
@@ -44,58 +41,23 @@ func main() {
 	app := &App{DB: db}
 
 	log.Println("Starting server on port 80...")
-	http.HandleFunc("/list", app.GetItems)
-	http.HandleFunc("/upload", app.CreateItem)
+	http.HandleFunc("/items", app.GetItems)
+	http.HandleFunc("/item", app.HandleItem)
+
 	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodGet {
-		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
-		return
+func (a *App) HandleItem(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodPost:
+		a.CreateItem(w, r)
+	case http.MethodPut:
+		a.UpdateItemByName(w, r)
+	case http.MethodDelete:
+		a.DeleteItemByName(w, r)
+	default:
+		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
-
-	var items []api.Item
-	result := a.DB.Find(&items)
-	if result.Error != nil {
-		log.Printf("Error during query: %v", result.Error)
-		http.Error(w, fmt.Sprintf("Database error: %v", result.Error), http.StatusInternalServerError)
-		return
-	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(items)
-}
-
-func (a *App) CreateItem(w http.ResponseWriter, r *http.Request) {
-	r.ParseMultipartForm(10 << 20)
-	name := r.FormValue("name")
-
-	file, handler, err := r.FormFile("image")
-	if err != nil {
-		http.Error(w, "You must upload an image", http.StatusBadRequest)
-		return
-	}
-	defer file.Close()
-
-	os.MkdirAll("./uploads", os.ModePerm)
-	filePath := fmt.Sprintf("uploads/%d-%s", time.Now().Unix(), handler.Filename)
-
-	dst, err := os.Create(filePath)
-	if err != nil {
-		http.Error(w, "Error during image save", http.StatusInternalServerError)
-		return
-	}
-	defer dst.Close()
-	io.Copy(dst, file)
-
-	newItem := api.Item{
-		Name:      name,
-		ImagePath: filePath,
-	}
-	a.DB.Create(&newItem)
-
-	json.NewEncoder(w).Encode(newItem)
 }

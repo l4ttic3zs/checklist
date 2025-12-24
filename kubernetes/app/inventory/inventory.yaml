@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checklist-inventory
+  namespace: checklist
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: checklist-inventory
+  template:
+    metadata:
+      labels:
+        app: checklist-inventory
+    spec:
+      containers:
+      - name: checklist-inventory
+        image: docker.io/bmzsombi/checklist-inventory:latest
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "checklist-database-rw"
+        - name: DB_NAME
+          value: "checklist_db"
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: checklist-database-app
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: checklist-database-app
+              key: password
