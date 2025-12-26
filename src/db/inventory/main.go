@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	"inventory/api"
 	"log"
 	"net/http"
 	"os"
@@ -30,6 +31,11 @@ func main() {
 	})
 	if err != nil {
 		log.Fatalf("Cannot connect to database: %v", err)
+	}
+
+	err = db.AutoMigrate(&api.ItemType{}, &api.Item{})
+	if err != nil {
+		log.Printf("Migration error: %v", err)
 	}
 
 	app := &App{DB: db}

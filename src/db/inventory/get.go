@@ -7,6 +7,10 @@ import (
 )
 
 func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
+	if r.Method != http.MethodGet {
+		w.WriteHeader(http.StatusMethodNotAllowed)
+		return
+	}
 	var items []api.Item
 	result := a.DB.Preload("ItemType").Find(&items)
 
@@ -20,7 +24,7 @@ func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) GetItem(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPut {
+	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}

@@ -13,8 +13,8 @@ func (a *App) CreateItem(w http.ResponseWriter, r *http.Request) {
 	}
 
 	var input struct {
-		ItemTypeID uint `json:"item_type_id"`
-		Count      int  `json:"count"`
+		ItemTypeName string `json:"item_type"`
+		Count        int    `json:"count"`
 	}
 
 	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
@@ -22,17 +22,22 @@ func (a *App) CreateItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var itemType api.ItemType
+	if err := a.DB.Where("name = ?", input.ItemTypeName).First(&itemType).Error; err != nil {
+		http.Error(w, "Item type not found in catalog. Create it there first!", http.StatusNotFound)
+		return
+	}
+
 	newItem := api.Item{
-		ItemTypeID: input.ItemTypeID,
+		ItemTypeID: itemType.ID,
 		Count:      input.Count,
 	}
 
 	if err := a.DB.Create(&newItem).Error; err != nil {
-		http.Error(w, "Could not create item (check if item_type_id exists)", http.StatusInternalServerError)
+		http.Error(w, "Database error: "+err.Error(), http.StatusInternalServerError)
 		return
 	}
 
-	// Preload-oljuk a választ, hogy a kliens lássa a típus nevét is
 	a.DB.Preload("ItemType").First(&newItem, newItem.ID)
 
 	w.Header().Set("Content-Type", "application/json")

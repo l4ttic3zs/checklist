@@ -9,6 +9,6 @@ type ItemType struct {
 type Item struct {
 	ID         uint     `gorm:"primaryKey;autoIncrement" json:"id"`
 	ItemTypeID uint     `json:"item_type_id"`
-	ItemType   ItemType `gorm:"foreignKey:ItemTypeID" json:"item_type"`
+	ItemType   ItemType `gorm:"foreignKey:ItemTypeID;constraint:OnUpdate:CASCADE,OnDelete:CASCADE;" json:"item_type"`
 	Count      int      `json:"count"`
 }

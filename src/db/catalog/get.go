@@ -13,7 +13,7 @@ func (a *App) GetItemTypes(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	log.Println("Getting items")
+	log.Println("[GET] - [CATALOG] - Getting items")
 
 	var items []api.ItemType
 	result := a.DB.Find(&items)
@@ -28,7 +28,7 @@ func (a *App) GetItemTypes(w http.ResponseWriter, r *http.Request) {
 }
 
 func (a *App) GetItemType(w http.ResponseWriter, r *http.Request) {
-	if r.Method != http.MethodPut {
+	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
@@ -39,6 +39,8 @@ func (a *App) GetItemType(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Missing name parameter", http.StatusBadRequest)
 		return
 	}
+
+	log.Printf("[GET] - [CATALOG] - Getting item by name: %s", targetName)
 
 	var item api.ItemType
 	if err := a.DB.Where("name = ?", targetName).First(&item).Error; err != nil {

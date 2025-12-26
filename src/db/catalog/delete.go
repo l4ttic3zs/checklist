@@ -19,19 +19,24 @@ func (a *App) DeleteItemTypeByName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	var item api.ItemType
-	if err := a.DB.Where("name = ?", targetName).First(&item).Error; err != nil {
-		http.Error(w, "Item not found", http.StatusNotFound)
+	log.Printf("[DELETE] - [CATALOG] - Deleting item by name: %s", targetName)
+
+	var itemtype api.ItemType
+	if err := a.DB.Where("name = ?", targetName).First(&itemtype).Error; err != nil {
+		http.Error(w, "Itemtype not found", http.StatusNotFound)
 		return
 	}
 
-	if item.ImagePath != "" {
-		err := os.Remove(item.ImagePath)
+	if itemtype.ImagePath != "" {
+		err := os.Remove(itemtype.ImagePath)
 		if err != nil {
 			log.Printf("Could not delete file: %v", err)
 		}
 	}
 
-	a.DB.Delete(&item)
+	if err := a.DB.Delete(&itemtype).Error; err != nil {
+		http.Error(w, err.Error(), http.StatusInternalServerError)
+		return
+	}
 	w.WriteHeader(http.StatusOK)
 }

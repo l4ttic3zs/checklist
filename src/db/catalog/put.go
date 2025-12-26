@@ -24,6 +24,8 @@ func (a *App) UpdateItemTypeByName(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Printf("[PUT] - [CATALOG] - Modifying item by name: %s", targetName)
+
 	var item api.ItemType
 	if err := a.DB.Where("name = ?", targetName).First(&item).Error; err != nil {
 		http.Error(w, "Item not found with this name", http.StatusNotFound)

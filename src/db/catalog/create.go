@@ -5,6 +5,7 @@ import (
 	"encoding/json"
 	"fmt"
 	"io"
+	"log"
 	"net/http"
 	"os"
 	"time"
@@ -17,6 +18,8 @@ func (a *App) CreateItemType(w http.ResponseWriter, r *http.Request) {
 	}
 	r.ParseMultipartForm(10 << 20)
 	name := r.FormValue("name")
+
+	log.Printf("[POST] - [CATALOG] - Creating item with name: %s", name)
 
 	file, handler, err := r.FormFile("image")
 	if err != nil {
