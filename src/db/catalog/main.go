@@ -41,8 +41,8 @@ func main() {
 	app := &App{DB: db}
 
 	log.Println("Starting server on port 80...")
-	http.HandleFunc("/items", app.GetItems)
-	http.HandleFunc("/item", app.HandleItem)
+	http.HandleFunc("/itemtypes", app.GetItemTypes)
+	http.HandleFunc("/itemtype", app.HandleItem)
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatal(err)
@@ -51,12 +51,14 @@ func main() {
 
 func (a *App) HandleItem(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
+	case http.MethodGet:
+		a.GetItemType(w, r)
 	case http.MethodPost:
-		a.CreateItem(w, r)
+		a.CreateItemType(w, r)
 	case http.MethodPut:
-		a.UpdateItemByName(w, r)
+		a.UpdateItemTypeByName(w, r)
 	case http.MethodDelete:
-		a.DeleteItemByName(w, r)
+		a.DeleteItemTypeByName(w, r)
 	default:
 		w.WriteHeader(http.StatusMethodNotAllowed)
 	}

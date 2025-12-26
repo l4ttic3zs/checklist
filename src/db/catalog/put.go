@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-func (a *App) UpdateItemByName(w http.ResponseWriter, r *http.Request) {
+func (a *App) UpdateItemTypeByName(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return

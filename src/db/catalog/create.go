@@ -10,7 +10,7 @@ import (
 	"time"
 )
 
-func (a *App) CreateItem(w http.ResponseWriter, r *http.Request) {
+func (a *App) CreateItemType(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return

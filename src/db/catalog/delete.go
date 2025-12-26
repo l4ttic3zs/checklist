@@ -7,7 +7,7 @@ import (
 	"os"
 )
 
-func (a *App) DeleteItemByName(w http.ResponseWriter, r *http.Request) {
+func (a *App) DeleteItemTypeByName(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodDelete {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return

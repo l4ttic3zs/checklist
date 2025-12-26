@@ -8,7 +8,7 @@ import (
 	"net/http"
 )
 
-func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
+func (a *App) GetItemTypes(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodGet {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
@@ -27,7 +27,7 @@ func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
 	json.NewEncoder(w).Encode(items)
 }
 
-func (a *App) GetItem(w http.ResponseWriter, r *http.Request) {
+func (a *App) GetItemType(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPut {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return

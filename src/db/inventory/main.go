@@ -1,9 +1,7 @@
 package main
 
 import (
-	"encoding/json"
 	"fmt"
-	"inventory/api"
 	"log"
 	"net/http"
 	"os"
@@ -38,21 +36,24 @@ func main() {
 
 	log.Println("Starting server on port 80...")
 	http.HandleFunc("/items", app.GetItems)
+	http.HandleFunc("/item", app.HandleItem)
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatal(err)
 	}
 }
 
-func (a *App) GetItems(w http.ResponseWriter, r *http.Request) {
-	var items []api.Item
-	result := a.DB.Preload("ItemType").Find(&items)
-
-	if result.Error != nil {
-		http.Error(w, result.Error.Error(), http.StatusInternalServerError)
-		return
+func (a *App) HandleItem(w http.ResponseWriter, r *http.Request) {
+	switch r.Method {
+	case http.MethodGet:
+		a.GetItem(w, r)
+	case http.MethodPost:
+		a.CreateItem(w, r)
+	case http.MethodPut:
+		a.UpdateItemByName(w, r)
+	case http.MethodDelete:
+		a.DeleteItem(w, r)
+	default:
+		w.WriteHeader(http.StatusMethodNotAllowed)
 	}
-
-	w.Header().Set("Content-Type", "application/json")
-	json.NewEncoder(w).Encode(items)
 }
