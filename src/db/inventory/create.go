@@ -28,6 +28,13 @@ func (a *App) CreateItem(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	var existingItem api.Item
+	err := a.DB.Where("item_type_id = ?", itemType.ID).First(&existingItem).Error
+	if err == nil {
+		http.Error(w, "This item already exist from this type. Use PUT to modify it.", http.StatusConflict)
+		return
+	}
+
 	newItem := api.Item{
 		ItemTypeID: itemType.ID,
 		Count:      input.Count,
