@@ -36,8 +36,7 @@ func (a *App) CreateItem(w http.ResponseWriter, r *http.Request) {
 	}
 
 	newItem := api.Item{
-		ItemTypeID: itemType.ID,
-		Count:      input.Count,
+		Count: input.Count,
 	}
 
 	if err := a.DB.Create(&newItem).Error; err != nil {
