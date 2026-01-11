@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 resources:
 - cnpg/db.yaml
+- rabbitmq/purchase-queue.yaml
 
 - app/catalog/pvc.yaml
 - app/catalog/catalog.yaml
