@@ -12,15 +12,22 @@ func (a *App) CreateItemType(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusMethodNotAllowed)
 		return
 	}
-	r.ParseMultipartForm(10 << 20)
-	name := r.FormValue("name")
-	filePath := r.FormValue("path")
 
-	log.Printf("[POST] - [CATALOG] - Creating item with name: %s", name)
+	var input struct {
+		Name      string `json:"name"`
+		ImagePath string `json:"imagePath"`
+	}
+
+	if err := json.NewDecoder(r.Body).Decode(&input); err != nil {
+		http.Error(w, "Invalid request body", http.StatusBadRequest)
+		return
+	}
+
+	log.Printf("[POST] - [CATALOG] - Creating item with name: %s", input.Name)
 
 	newItem := api.ItemType{
-		Name:      name,
-		ImagePath: filePath,
+		Name:      input.Name,
+		ImagePath: input.ImagePath,
 	}
 	a.DB.Create(&newItem)
 	json.NewEncoder(w).Encode(newItem)
