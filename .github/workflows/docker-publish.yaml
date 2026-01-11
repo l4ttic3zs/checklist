@@ -38,3 +38,12 @@ jobs:
           tags: bmzsombi/checklist-inventory:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Build and push shoppinglist
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/db/shoppinglist/
+          push: true
+          tags: bmzsombi/checklist-shoppinglist:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
