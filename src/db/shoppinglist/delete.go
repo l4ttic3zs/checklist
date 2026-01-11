@@ -12,11 +12,20 @@ func (a *App) DeleteShoppingListItem(w http.ResponseWriter, r *http.Request) {
 	}
 
 	targetName := r.URL.Query().Get("name")
+	if targetName == "" {
+		http.Error(w, "Missing name parameter", http.StatusBadRequest)
+		return
+	}
 
 	var item api.ShoppingList
-	if err := a.DB.Where("name = ?", targetName).First(&item).Error; err != nil {
-		http.Error(w, "Item not found", http.StatusNotFound)
+	err := a.DB.Joins("ItemType").
+		Where("\"ItemType\".name = ?", targetName).
+		First(&item).Error
+	if err != nil {
+		http.Error(w, "Item not found with the given type name", http.StatusNotFound)
+		return
 	}
+
 	if err := a.DB.Delete(&item).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
