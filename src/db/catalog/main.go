@@ -33,7 +33,7 @@ func main() {
 		log.Fatalf("Cannot connect to database: %v", err)
 	}
 
-	err = db.AutoMigrate(&api.ItemType{}, &api.Item{})
+	err = db.AutoMigrate(&api.ItemType{})
 	if err != nil {
 		log.Printf("Migration error: %v", err)
 	}

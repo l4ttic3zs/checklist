@@ -7,13 +7,15 @@ import (
 	"os"
 	"shoppinglist/api"
 
+	amqp "github.com/rabbitmq/amqp091-go"
 	"gorm.io/driver/postgres"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
 )
 
 type App struct {
-	DB *gorm.DB
+	DB  *gorm.DB
+	RMQ *amqp.Connection
 }
 
 func main() {
@@ -38,11 +40,28 @@ func main() {
 		log.Printf("Migration error: %v", err)
 	}
 
-	app := &App{DB: db}
+	rmquser := os.Getenv("RABBITMQ_USER")
+	rmqpass := os.Getenv("RABBITMQ_PASS")
+	rmqhost := os.Getenv("RABBITMQ_HOST")
+	rmqport := "5672"
+
+	address := fmt.Sprintf("amqp://%s:%s@%s:%s/", rmquser, rmqpass, rmqhost, rmqport)
+
+	rmqConn, err := amqp.Dial(address)
+	if err != nil {
+		return
+	}
+	defer rmqConn.Close()
+
+	app := &App{
+		DB:  db,
+		RMQ: rmqConn,
+	}
 
 	log.Println("Starting server on port 80...")
 	http.HandleFunc("/shoppinglist", app.GetShoppingListItems)
 	http.HandleFunc("/shoppinglist/item", app.HandleItem)
+	http.HandleFunc("/shoppinglist/purchase", app.ItemPurchased)
 
 	if err := http.ListenAndServe(":80", nil); err != nil {
 		log.Fatal(err)
