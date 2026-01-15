@@ -5,15 +5,19 @@ import (
 	"fmt"
 	"inventory/api"
 	"log"
-
-	amqp "github.com/rabbitmq/amqp091-go"
 )
 
 func (a *App) StartListening() {
-	conn, _ := amqp.Dial("amqp://guest:guest@checklist-purchase-queue:5672/")
-	ch, _ := conn.Channel()
+	ch, err := a.RMQ.Channel()
+	if err != nil {
+		log.Fatalf("failed to open a channel: %e", err)
+	}
+	defer ch.Close()
 
-	msgs, _ := ch.Consume("purchase_queue", "", true, false, false, false, nil)
+	msgs, err := ch.Consume("purchase_queue", "", true, false, false, false, nil)
+	if err != nil {
+		log.Fatalf("%e", err)
+	}
 
 	go func() {
 		for d := range msgs {
@@ -23,7 +27,7 @@ func (a *App) StartListening() {
 			}
 			json.Unmarshal(d.Body, &data)
 
-			log.Printf("Vásárlás érkezett: %d darab", data.Count)
+			log.Printf("Purchase arrived: %d darab", data.Count)
 			a.updateInventory(data.Name, data.Count)
 		}
 	}()
