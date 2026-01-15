@@ -57,6 +57,7 @@ func main() {
 		DB:  db,
 		RMQ: rmqConn,
 	}
+	app.StartListening()
 
 	log.Println("Starting server on port 80...")
 	http.HandleFunc("/items", app.GetItems)
