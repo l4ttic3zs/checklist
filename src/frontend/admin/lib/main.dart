@@ -57,6 +57,10 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Shoppinglist'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodPage()),
+                );
               },
             ),
             ListTile(
