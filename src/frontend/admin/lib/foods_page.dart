@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:admin/models/food_types.dart';
 import 'package:admin/models/foods.dart';
+import 'package:admin/food_types_page.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({super.key});
@@ -43,6 +43,10 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Shoppinglist'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodPage()),
+                );
               },
             ),
             ListTile(
@@ -50,6 +54,10 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Inventory'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodPage()),
+                );
               },
             ),
             ListTile(
@@ -57,6 +65,10 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Food types'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodTypePage()),
+                );
               },
             ),
           ],

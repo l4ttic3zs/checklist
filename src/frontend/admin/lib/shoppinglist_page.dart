@@ -2,15 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:admin/models/foods.dart';
+import 'package:admin/food_types_page.dart';
+import 'package:admin/foods_page.dart';
 
-class FoodPage extends StatefulWidget {
-  const FoodPage({super.key});
+class ShoppingListPage extends StatefulWidget {
+  const ShoppingListPage({super.key});
 
   @override
-  State<FoodPage> createState() => _FoodTypePageState();
+  State<ShoppingListPage> createState() => _ShoppingListPageState();
 }
 
-class _FoodTypePageState extends State<FoodPage> {
+class _ShoppingListPageState extends State<ShoppingListPage> {
   Future<List<Foods>> fetchFoods() async {
     final response = await http.get(Uri.parse('/shoppinglist'));
 
@@ -42,6 +44,10 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Shoppinglist'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodPage()),
+                );
               },
             ),
             ListTile(
@@ -49,6 +55,10 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Inventory'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodPage()),
+                );
               },
             ),
             ListTile(
@@ -56,6 +66,10 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Food types'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodTypePage()),
+                );
               },
             ),
           ],

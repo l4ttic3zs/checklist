@@ -1,5 +1,6 @@
 import 'package:admin/food_types_page.dart';
 import 'package:flutter/material.dart';
+import 'package:admin/foods_page.dart';
 
 void main() {
   runApp(const MyApp());
@@ -63,6 +64,10 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Inventory'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodPage()),
+                );
               },
             ),
             ListTile(
@@ -70,6 +75,10 @@ class _MyHomePageState extends State<MyHomePage> {
               title: const Text('Food types'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FoodTypePage()),
+                );
               },
             ),
           ],
