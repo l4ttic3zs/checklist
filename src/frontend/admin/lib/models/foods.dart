@@ -1,15 +1,17 @@
-class FoodType {
+import 'food_types.dart';
+
+class Foods {
   final int id;
-  final String name;
-  final String imagePath;
+  final FoodType foodtype;
+  final int count;
 
-  FoodType({required this.id, required this.name, required this.imagePath});
+  Foods({required this.id, required this.foodtype, required this.count});
 
-  factory FoodType.fromJson(Map<String, dynamic> json) {
-    return FoodType(
+  factory Foods.fromJson(Map<String, dynamic> json) {
+    return Foods(
       id: json['id'],
-      name: json['name'],
-      imagePath: json['image_path'],
+      foodtype: json['item_type'],
+      count: json['count'],
     );
   }
 }
