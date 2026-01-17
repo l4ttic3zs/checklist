@@ -21,6 +21,15 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Build and push Flutter Admin frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/frontend/admin/
+          push: true
+          tags: bmzsombi/checklist-admin:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Build and push catalog
         uses: docker/build-push-action@v5
         with:
@@ -57,11 +66,4 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-      - name: Build and push Flutter Admin frontend
-        uses: docker/build-push-action@v5
-        with:
-          context: ./src/frontend/admin/
-          push: true
-          tags: bmzsombi/checklist-admin:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+      
