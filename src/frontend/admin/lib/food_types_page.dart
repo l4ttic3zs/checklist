@@ -56,8 +56,11 @@ class _FoodTypePageState extends State<FoodTypePage> {
   var response = await http.Response.fromStream(streamedResponse);
 
   if (response.statusCode == 201 || response.statusCode == 200) {
-    setState(() {
-    });
+    setState(() {});
+    
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Sikeresen hozzáadva!')),
+    );
   } else {
     throw Exception('Sikertelen mentés: ${response.body}');
   }
