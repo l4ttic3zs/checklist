@@ -1,4 +1,4 @@
-import 'package:admin/foods_page.dart';
+import 'package:admin/food_types_page.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -16,7 +16,7 @@ class MyApp extends StatelessWidget {
         colorScheme: .fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true
       ),
-      home: const FoodTypePage(),
+      home: FoodTypePage(),
     );
   }
 }

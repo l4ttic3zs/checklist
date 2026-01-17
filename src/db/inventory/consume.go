@@ -14,6 +14,18 @@ func (a *App) StartListening() {
 	}
 	defer ch.Close()
 
+	q, err := ch.QueueDeclare(
+        "purchase_queue",
+        true,     
+        false,       
+        false,         
+        false,       
+        nil, 
+    )
+    if err != nil {
+        log.Fatalf("failed to declare a queue: %v", err)
+    }
+
 	msgs, err := ch.Consume("purchase_queue", "", true, false, false, false, nil)
 	if err != nil {
 		log.Fatalf("%e", err)
