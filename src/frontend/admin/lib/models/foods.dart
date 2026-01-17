@@ -1,4 +1,4 @@
-import 'food_types.dart';
+import 'package:admin/models/food_types.dart';
 
 class Foods {
   final int id;

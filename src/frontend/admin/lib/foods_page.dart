@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'models/food_types.dart';
+import 'package:admin/models/food_types.dart';
 
 class FoodTypePage extends StatefulWidget {
   const FoodTypePage({super.key});
