@@ -4,6 +4,8 @@ import 'dart:convert';
 import 'package:admin/models/foods.dart';
 import 'package:admin/food_types_page.dart';
 import 'package:admin/foods_page.dart';
+import 'package:flutter/foundation.dart';
+import 'package:file_picker/file_picker.dart';
 
 class ShoppingListPage extends StatefulWidget {
   const ShoppingListPage({super.key});
@@ -13,8 +15,14 @@ class ShoppingListPage extends StatefulWidget {
 }
 
 class _ShoppingListPageState extends State<ShoppingListPage> {
+  PlatformFile? _pickedFile;
+
   Future<List<Foods>> fetchFoods() async {
-    final response = await http.get(Uri.parse('/shoppinglist'));
+    final String url = kIsWeb 
+      ? '/shoppinglist' 
+      : 'http://192.168.10.65:80/shoppinglist';
+
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);

@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:admin/models/foods.dart';
 import 'package:admin/food_types_page.dart';
+import 'package:flutter/foundation.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({super.key});
@@ -13,7 +14,11 @@ class FoodPage extends StatefulWidget {
 
 class _FoodTypePageState extends State<FoodPage> {
   Future<List<Foods>> fetchFoods() async {
-    final response = await http.get(Uri.parse('/items'));
+    final String url = kIsWeb 
+      ? '/items' 
+      : 'http://192.168.10.61:80/items';
+
+    final response = await http.get(Uri.parse(url));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
