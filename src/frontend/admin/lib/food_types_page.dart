@@ -2,22 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:admin/models/food_types.dart';
-import 'package:admin/models/foods.dart';
 
-class FoodPage extends StatefulWidget {
-  const FoodPage({super.key});
+class FoodTypePage extends StatefulWidget {
+  const FoodTypePage({super.key});
 
   @override
-  State<FoodPage> createState() => _FoodTypePageState();
+  State<FoodTypePage> createState() => _FoodTypePageState();
 }
 
-class _FoodTypePageState extends State<FoodPage> {
-  Future<List<Foods>> fetchFoods() async {
-    final response = await http.get(Uri.parse('/items'));
+class _FoodTypePageState extends State<FoodTypePage> {
+  Future<List<FoodType>> fetchFoodTypes() async {
+    final response = await http.get(Uri.parse('/itemtypes'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);
-      return jsonResponse.map((data) => Foods.fromJson(data)).toList();
+      return jsonResponse.map((data) => FoodType.fromJson(data)).toList();
     } else {
       throw Exception('Could not load food types');
     }
@@ -62,8 +61,8 @@ class _FoodTypePageState extends State<FoodPage> {
           ],
         ),
       ),
-      body: FutureBuilder<List<Foods>>(
-        future: fetchFoods(),
+      body: FutureBuilder<List<FoodType>>(
+        future: fetchFoodTypes(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
@@ -79,10 +78,10 @@ class _FoodTypePageState extends State<FoodPage> {
               final item = snapshot.data![index];
               return ListTile(
                 leading: const CircleAvatar(child: Icon(Icons.restaurant)),
-                title: Text(item.foodtype.name),
+                title: Text(item.name),
                 subtitle: Text('ID: ${item.id}'),
                 onTap: () {
-                   print('Selected: ${item.foodtype.name}');
+                   print('Selected: ${item.name}');
                 },
               );
             },
