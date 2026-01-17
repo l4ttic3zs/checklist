@@ -36,9 +36,13 @@ class _FoodTypePageState extends State<FoodTypePage> {
   Future<void> _addNewFoodType(String name, PlatformFile pickedFile) async {
   final String url = kIsWeb 
     ? '/itemtypes' 
-    : 'http://192.168.10.60/itemtypes';
+    : 'http://192.168.10.60/itemtype';
 
   var request = http.MultipartRequest('POST', Uri.parse(url));
+  request.headers.addAll({
+    "Accept": "*/*",
+    "Content-Type": "multipart/form-data",
+  });
   request.fields['name'] = name;
 
   if (pickedFile.bytes != null) {
