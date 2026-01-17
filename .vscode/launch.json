@@ -1,0 +1,57 @@
+{
+    // Use IntelliSense to learn about possible attributes.
+    // Hover to view descriptions of existing attributes.
+    // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+    "version": "0.2.0",
+    "configurations": [
+
+        {
+            "name": "Flutter Web (Chrome Profile)",
+            "request": "launch",
+            "type": "dart",
+            "args": [
+                "--web-browser-flag=--user-data-dir=C:\\Felhasználók\\bmzso.JENKINS.000\\AppData\\Local\\Google\\Chrome\\User Data"
+            ]
+        },
+        {
+            "name": "admin",
+            "cwd": "src\\frontend\\admin",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "admin (profile mode)",
+            "cwd": "src\\frontend\\admin",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "admin (release mode)",
+            "cwd": "src\\frontend\\admin",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        },
+        {
+            "name": "responsible",
+            "cwd": "src\\frontend\\responsible",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "responsible (profile mode)",
+            "cwd": "src\\frontend\\responsible",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "profile"
+        },
+        {
+            "name": "responsible (release mode)",
+            "cwd": "src\\frontend\\responsible",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}
