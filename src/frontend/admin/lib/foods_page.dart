@@ -12,7 +12,7 @@ class FoodTypePage extends StatefulWidget {
 
 class _FoodTypePageState extends State<FoodTypePage> {
   Future<List<FoodType>> fetchFoodTypes() async {
-    final response = await http.get(Uri.parse('http://http://192.168.10.60/itemtypes'));
+    final response = await http.get(Uri.parse('http://192.168.10.60/itemtypes'));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);

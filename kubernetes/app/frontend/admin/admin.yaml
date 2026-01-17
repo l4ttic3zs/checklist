@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: checklist-admin
+spec:
+  replicas: 1
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: checklist-admin
+  template:
+    metadata:
+      labels:
+        app: checklist-admin
+    spec:
+      containers:
+      - name: checklist-admin
+        image: docker.io/bmzsombi/checklist-admin:latest
+        ports:
+        - containerPort: 80
