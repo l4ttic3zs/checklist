@@ -27,7 +27,7 @@ func (a *App) StartListening() {
 			}
 			json.Unmarshal(d.Body, &data)
 
-			log.Printf("Purchase arrived: %d darab", data.Count)
+			log.Printf("Purchase arrived: %d piece", data.Count)
 			a.updateInventory(data.Name, data.Count)
 		}
 	}()

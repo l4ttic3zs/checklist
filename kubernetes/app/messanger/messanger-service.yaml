@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: checklist-messanger-service
+  labels:
+    app: checklist-messanger
+spec:
+  selector:
+    app: checklist-messanger
+  type: LoadBalancer
+  ports:
+  - name: http-port
+    port: 80
+    protocol: TCP
+    targetPort: 80
