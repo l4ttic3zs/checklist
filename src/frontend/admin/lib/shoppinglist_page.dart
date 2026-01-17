@@ -28,7 +28,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Types'),
+        title: const Text('Shopping List'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       drawer: Drawer(
@@ -44,9 +44,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               title: const Text('Shoppinglist'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
-                  MaterialPageRoute(builder: (context) => FoodPage()),
+                  MaterialPageRoute(builder: (context) => ShoppingListPage()),
                 );
               },
             ),

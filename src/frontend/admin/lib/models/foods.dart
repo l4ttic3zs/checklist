@@ -10,7 +10,7 @@ class Foods {
   factory Foods.fromJson(Map<String, dynamic> json) {
     return Foods(
       id: json['id'],
-      foodtype: json['item_type'],
+      foodtype: FoodType.fromJson(json['item_type']),
       count: json['count'],
     );
   }

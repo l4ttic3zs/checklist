@@ -27,7 +27,7 @@ class _FoodTypePageState extends State<FoodPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Food Types'),
+        title: const Text('Inventory'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       drawer: Drawer(
@@ -54,7 +54,7 @@ class _FoodTypePageState extends State<FoodPage> {
               title: const Text('Inventory'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => FoodPage()),
                 );
