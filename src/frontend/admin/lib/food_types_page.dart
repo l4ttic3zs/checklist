@@ -52,7 +52,7 @@ class _FoodTypePageState extends State<FoodTypePage> {
       filename: pickedFile.name,
     ));
   } else {
-    print("Hiba: A fájl bájtok üresek!");
+    print("Error: empty bytes!");
     return;
   }
 
@@ -63,10 +63,10 @@ class _FoodTypePageState extends State<FoodTypePage> {
     setState(() {});
     
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Sikeresen hozzáadva!')),
+      const SnackBar(content: Text('Added Successfully')),
     );
   } else {
-    throw Exception('Sikertelen mentés: ${response.body}');
+    throw Exception('Save unsuccessfull: ${response.body}');
   }
 }
 
@@ -78,13 +78,13 @@ class _FoodTypePageState extends State<FoodTypePage> {
     context: context,
     builder: (context) => StatefulBuilder(
       builder: (context, setDialogState) => AlertDialog(
-        title: const Text('Új étel típus'),
+        title: const Text('New Food Type'),
         content: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
             TextField(
               controller: nameController, 
-              decoration: const InputDecoration(labelText: 'Étel neve')
+              decoration: const InputDecoration(labelText: 'Food name')
             ),
             const SizedBox(height: 20),
             ElevatedButton.icon(
@@ -103,19 +103,19 @@ class _FoodTypePageState extends State<FoodTypePage> {
               },
               icon: const Icon(Icons.image),
               label: Text(localPickedFile == null 
-                  ? 'Kép kiválasztása' 
-                  : 'Kép: ${localPickedFile!.name}'),
+                  ? 'Select image' 
+                  : 'Image: ${localPickedFile!.name}'),
             ),
           ],
         ),
         actions: [
-          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Mégse')),
+          TextButton(onPressed: () => Navigator.pop(context), child: const Text('Cancel')),
           ElevatedButton(
             onPressed: (localPickedFile == null) ? null : () {
               _addNewFoodType(nameController.text, localPickedFile!);
               Navigator.pop(context);
             }, 
-            child: const Text('Mentés')
+            child: const Text('Save')
           ),
         ],
       ),
