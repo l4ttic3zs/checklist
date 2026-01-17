@@ -36,12 +36,12 @@ spec:
         - name: RABBITMQ_USER
           valueFrom:
             secretKeyRef:
-              name: checklist-purchase-queue-default-user
+              name: checklist-queue-default-user
               key: username
         - name: RABBITMQ_PASS
           valueFrom:
             secretKeyRef:
-              name: checklist-purchase-queue-default-user
+              name: checklist-queue-default-user
               key: password
         - name: RABBITMQ_HOST
-          value: "checklist-purchase-queue"
+          value: "checklist-queue"

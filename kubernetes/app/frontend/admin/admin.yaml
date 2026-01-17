@@ -18,3 +18,10 @@ spec:
         image: docker.io/bmzsombi/checklist-admin:latest
         ports:
         - containerPort: 80
+        volumeMounts:
+        - name: image-storage
+          mountPath: /app/uploads
+      volumes:
+      - name: image-storage
+        persistentVolumeClaim:
+          claimName: checklist-images-pvc
