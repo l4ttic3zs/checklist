@@ -19,7 +19,7 @@ class ConnectionManager:
     async def broadcast(self, message: str):
         for connection in self.active_connections:
             try:
-                print("asdasdasd")
+                print(f"asdasdasd")
                 await connection.send_text(message)
             except:
                 pass
@@ -34,6 +34,7 @@ class SimpleMessage(BaseModel):
 async def receive_message(data: SimpleMessage):
     print(f"--- New Message ---")
     print(f"Content: {data.msg}")
+    print(f"haha")
     
     await manager.broadcast(f"Message: {data.msg}")
     
