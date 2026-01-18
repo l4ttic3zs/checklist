@@ -35,7 +35,22 @@ func (a *App) StartListening() {
 func (a *App) updateInventory(name string, count int) error {
 	var itemType api.ItemType
 	if err := a.DB.Where("name = ?", name).First(&itemType).Error; err != nil {
-		return fmt.Errorf("Item type not found with this name")
+		var itemType api.ItemType
+		if err := a.DB.Where("name = ?", name).First(&itemType).Error; err != nil {
+			return fmt.Errorf("Item type not found in catalog. Create it there first!")
+		}
+
+		newItem := api.Item{
+			ItemTypeID: itemType.ID,
+			Count:      count,
+		}
+		if err := a.DB.Create(&newItem).Error; err != nil {
+			return fmt.Errorf("Database error: " + err.Error())
+		}
+
+		a.DB.Preload("ItemType").First(&newItem, newItem.ID)
+
+		return nil
 	}
 
 	var item api.Item
