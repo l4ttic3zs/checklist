@@ -30,6 +30,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build and push Flutter Responsible frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/frontend/responsible/
+          push: true
+          tags: bmzsombi/checklist-responsible:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Build and push messanger
         uses: docker/build-push-action@v5
         with:

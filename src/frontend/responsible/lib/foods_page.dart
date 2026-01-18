@@ -1,24 +1,21 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:admin/models/foods.dart';
-import 'package:admin/food_types_page.dart';
-import 'package:admin/foods_page.dart';
+import 'package:responsible/models/foods.dart';
 import 'package:flutter/foundation.dart';
 
-class ShoppingListPage extends StatefulWidget {
-  const ShoppingListPage({super.key});
+class FoodPage extends StatefulWidget {
+  const FoodPage({super.key});
 
   @override
-  State<ShoppingListPage> createState() => _ShoppingListPageState();
+  State<FoodPage> createState() => _FoodTypePageState();
 }
 
-class _ShoppingListPageState extends State<ShoppingListPage> {
-
+class _FoodTypePageState extends State<FoodPage> {
   Future<List<Foods>> fetchFoods() async {
     final String url = kIsWeb 
-      ? '/shoppinglist' 
-      : 'http://192.168.10.65:80/shoppinglist';
+      ? '/items' 
+      : 'http://192.168.10.61:80/items';
 
     final response = await http.get(Uri.parse(url));
 
@@ -32,9 +29,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return Scaffold(    
       appBar: AppBar(
-        title: const Text('Shopping List'),
+        title: const Text('Inventory'),
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
       ),
       drawer: Drawer(
@@ -50,9 +47,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               title: const Text('Shoppinglist'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.pushReplacement(
+                Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => ShoppingListPage()),
+                  MaterialPageRoute(builder: (context) => FoodPage()),
                 );
               },
             ),
@@ -61,20 +58,9 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               title: const Text('Inventory'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(
+                Navigator.pushReplacement(
                   context,
                   MaterialPageRoute(builder: (context) => FoodPage()),
-                );
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.fastfood),
-              title: const Text('Food types'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FoodTypePage()),
                 );
               },
             ),

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:admin/models/foods.dart';
-import 'package:admin/food_types_page.dart';
-import 'package:admin/foods_page.dart';
+import 'package:responsible/models/foods.dart';
+import 'package:responsible/foods_page.dart';
 import 'package:flutter/foundation.dart';
 
 class ShoppingListPage extends StatefulWidget {
@@ -27,6 +26,36 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
       return jsonResponse.map((data) => Foods.fromJson(data)).toList();
     } else {
       throw Exception('Could not load food types');
+    }
+  }
+
+  Future<void> _purchaseItem(String name, int count) async {
+    final String url = kIsWeb 
+        ? '/shoppinglist/purchase' 
+        : 'http://192.168.10.65:80/shoppinglist/purchase';
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {"Content-Type": "application/json"},
+        body: jsonEncode({
+          "name": name,
+          "count": count,
+        }),
+      );
+
+      if (response.statusCode == 200 || response.statusCode == 201) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('$name megvásárolva!')),
+        );
+        setState(() {});
+      } else {
+        throw Exception('Hiba a vásárlás során: ${response.statusCode}');
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Hiba: $e')),
+      );
     }
   }
 
@@ -67,17 +96,6 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
                 );
               },
             ),
-            ListTile(
-              leading: const Icon(Icons.fastfood),
-              title: const Text('Food types'),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => FoodTypePage()),
-                );
-              },
-            ),
           ],
         ),
       ),
@@ -99,7 +117,13 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
               return ListTile(
                 leading: const CircleAvatar(child: Icon(Icons.restaurant)),
                 title: Text(item.foodtype.name),
-                subtitle: Text('ID: ${item.id}'),
+                subtitle: Text('Count: ${item.count}'),
+                trailing: IconButton(
+                  icon: const Icon(Icons.check_circle_outline, color: Colors.green),
+                  onPressed: () {
+                    _purchaseItem(item.foodtype.name, item.count);
+                  },
+                ),
                 onTap: () {
                    print('Selected: ${item.foodtype.name}');
                 },
