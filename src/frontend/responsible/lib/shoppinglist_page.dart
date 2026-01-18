@@ -21,7 +21,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     super.initState();
     final String wsUrl = kIsWeb
     ? '/ws'
-    : 'ws://192.168.10.66:8000/ws';
+    : 'ws://192.168.10.66:80/ws';
 
     print("Connecting: $wsUrl");
     channel = WebSocketChannel.connect(Uri.parse(wsUrl));
