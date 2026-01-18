@@ -24,7 +24,13 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     : 'ws://192.168.10.66:80/ws';
 
     print("Connecting: $wsUrl");
-    channel = WebSocketChannel.connect(Uri.parse(wsUrl));
+    final uri = Uri(
+      scheme: 'ws',
+      host: '192.168.10.66',
+      port: 8080, // Ha átírtad feljebb
+      path: '/ws',
+    );
+    channel = WebSocketChannel.connect(uri);
 
     channel.stream.listen(
       (message) {
