@@ -1,12 +1,13 @@
-megy a program: 24
-lang2: 5
-asyncomm: 5
+megy a program: 24 pipa
+lang2: 5 pipa
+asyncomm: 5 pipa
 helm: 10
 acrbuild: 7(-12)
-k8ssecret: 3
+k8ssecret: 3 pipa
 ot: 5
-cicd: 10
-opstr: 3
+cicd: 10 pipa
+opstr: 3 pipa
 gw: 5
 
+eddig: 57
 összesen: 77
