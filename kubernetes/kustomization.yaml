@@ -20,3 +20,6 @@ resources:
 
 - app/frontend/admin/admin.yaml
 - app/frontend/admin/admin-service.yaml
+
+- app/frontend/responsible/responsible.yaml
+- app/frontend/responsible/responsible-service.yaml
