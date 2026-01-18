@@ -8,6 +8,7 @@ spec:
   selector:
     app: checklist-messanger
   type: LoadBalancer
+  LoadBalancerIP: 192.168.10.66
   ports:
   - name: http-port
     port: 80

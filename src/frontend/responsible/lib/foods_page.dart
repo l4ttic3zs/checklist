@@ -4,6 +4,7 @@ import 'dart:convert';
 import 'package:responsible/models/foods.dart';
 import 'package:flutter/foundation.dart';
 import 'package:responsible/shoppinglist_page.dart';
+import 'package:web_socket_channel/web_socket_channel.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({super.key});
@@ -13,6 +14,64 @@ class FoodPage extends StatefulWidget {
 }
 
 class _FoodTypePageState extends State<FoodPage> {
+  late WebSocketChannel channel;
+
+  @override
+  void initState() {
+    super.initState();
+    final String wsUrl = kIsWeb
+    ? '/ws'
+    : 'ws://192.168.10.66:8000/ws';
+    channel = WebSocketChannel.connect(Uri.parse(wsUrl));
+
+    channel.stream.listen((message) {
+      _showAlert(message);
+    });
+  }
+
+  void _showAlert(String message) {
+    ScaffoldMessenger.of(context).hideCurrentSnackBar();
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Row(
+          children: [
+            const Icon(Icons.info_outline, color: Colors.white),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Text(
+                message,
+                style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+              ),
+            ),
+          ],
+        ),
+        backgroundColor: Colors.deepPurple,
+        duration: const Duration(seconds: 2),
+        behavior: SnackBarBehavior.floating,
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: EdgeInsets.only(
+          bottom: MediaQuery.of(context).size.height * 0.4,
+          left: 20,
+          right: 20,
+        ),
+        action: SnackBarAction(
+          label: 'OK',
+          textColor: Colors.white,
+          onPressed: () {
+            ScaffoldMessenger.of(context).hideCurrentSnackBar();
+          },
+        ),
+      ),
+    );
+  }
+
+  @override
+  void dispose() {
+    channel.sink.close();
+    super.dispose();
+  }
+
   Future<List<Foods>> fetchFoods() async {
     final String url = kIsWeb 
       ? '/items' 
