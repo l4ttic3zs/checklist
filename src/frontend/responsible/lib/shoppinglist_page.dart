@@ -22,12 +22,18 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     final String wsUrl = kIsWeb
     ? '/ws'
     : 'ws://192.168.10.66:8000/ws';
+
+    print("Connecting: $wsUrl");
     channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 
-    channel.stream.listen((message) {
-      print(message);
-      _showAlert(message);
-    });
+    channel.stream.listen(
+      (message) {
+        print("Message received: $message");
+        _showAlert(message);
+      },
+      onError: (error) => print("WebSocket ERROR: $error"),
+      onDone: () => print("WebSocket connection closed."),
+    );
   }
 
   void _showAlert(String message) {
@@ -74,11 +80,11 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   }
 
   Future<List<Foods>> fetchFoods() async {
-    final String url = kIsWeb 
+    final String wsUrl = kIsWeb 
       ? '/shoppinglist' 
       : 'http://192.168.10.65:80/shoppinglist';
 
-    final response = await http.get(Uri.parse(url));
+    final response = await http.get(Uri.parse(wsUrl));
 
     if (response.statusCode == 200) {
       List jsonResponse = json.decode(response.body);

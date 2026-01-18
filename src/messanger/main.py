@@ -46,12 +46,15 @@ async def receive_message(data: SimpleMessage):
 
 @app.websocket("/ws")
 async def websocket_endpoint(websocket: WebSocket):
+    print("Endpoint connecting")
     await manager.connect(websocket)
+    print("Endpoint connected")
     try:
         while True:
             await websocket.receive_text()
     except WebSocketDisconnect:
         manager.disconnect(websocket)
+        print("endpoint disconnect")
 
 if __name__ == "__main__":
     import uvicorn

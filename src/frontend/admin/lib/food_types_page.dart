@@ -25,7 +25,7 @@ class _FoodTypePageState extends State<FoodTypePage> {
   Future<void> _sendMessage() async {
     if (_apiBreaker.isOpen) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Circuit Breaker nyitva, az üzenet nem küldhető el.')),
+        const SnackBar(content: Text('Circuit Breaker open')),
       );
       return;
     }
