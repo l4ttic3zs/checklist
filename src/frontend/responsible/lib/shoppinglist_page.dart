@@ -30,13 +30,13 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
   }
 
   Future<void> _purchaseItem(String name, int count) async {
-    final String url = kIsWeb 
+    final String purchase = kIsWeb 
         ? '/shoppinglist/purchase' 
         : 'http://192.168.10.65:80/shoppinglist/purchase';
 
     try {
       final response = await http.post(
-        Uri.parse(url),
+        Uri.parse(purchase),
         headers: {"Content-Type": "application/json"},
         body: jsonEncode({
           "name": name,

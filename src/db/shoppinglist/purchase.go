@@ -44,7 +44,7 @@ func (a *App) ItemPurchased(w http.ResponseWriter, r *http.Request) {
 	}
 
 	item.Count = 0
-	if err := a.DB.Save(&item).Error; err != nil {
+	if err := a.DB.Delete(&item).Error; err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
