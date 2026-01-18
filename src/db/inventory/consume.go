@@ -5,6 +5,9 @@ import (
 	"fmt"
 	"inventory/api"
 	"log"
+
+	"gorm.io/gorm"
+	"gorm.io/gorm/clause"
 )
 
 func (a *App) StartListening() {
@@ -27,7 +30,9 @@ func (a *App) StartListening() {
 			json.Unmarshal(d.Body, &data)
 
 			log.Printf("Purchase arrived: %d piece", data.Count)
-			a.updateInventory(data.Name, data.Count)
+			if err := a.updateInventory(data.Name, data.Count); err != nil {
+				log.Printf("ERROR updating inventory: %v", err)
+			}
 		}
 	}()
 }
@@ -35,32 +40,23 @@ func (a *App) StartListening() {
 func (a *App) updateInventory(name string, count int) error {
 	var itemType api.ItemType
 	if err := a.DB.Where("name = ?", name).First(&itemType).Error; err != nil {
-		var itemType api.ItemType
-		if err := a.DB.Where("name = ?", name).First(&itemType).Error; err != nil {
-			return fmt.Errorf("Item type not found in catalog. Create it there first!")
-		}
-
-		newItem := api.Item{
-			ItemTypeID: itemType.ID,
-			Count:      count,
-		}
-		if err := a.DB.Create(&newItem).Error; err != nil {
-			return fmt.Errorf("Database error: " + err.Error())
-		}
-
-		a.DB.Preload("ItemType").First(&newItem, newItem.ID)
-
-		return nil
+		return fmt.Errorf("item type '%s' not found", name)
 	}
 
-	var item api.Item
-	if err := a.DB.Where("item_type_id = ?", itemType.ID).First(&item).Error; err != nil {
-		return fmt.Errorf("Item not found in inventory")
+	err := a.DB.Clauses(clause.OnConflict{
+		Columns: []clause.Column{{Name: "item_type_id"}},
+		DoUpdates: clause.Assignments(map[string]interface{}{
+			"count": gorm.Expr("items.count + ?", count),
+		}),
+	}).Create(&api.Item{
+		ItemTypeID: itemType.ID,
+		Count:      count,
+	}).Error
+
+	if err != nil {
+		return fmt.Errorf("upsert failed: %v", err)
 	}
 
-	item.Count += count
-	if err := a.DB.Save(&item).Error; err != nil {
-		return fmt.Errorf("Could not save")
-	}
+	log.Printf("Inventory updated: %s (+%d)", name, count)
 	return nil
 }
