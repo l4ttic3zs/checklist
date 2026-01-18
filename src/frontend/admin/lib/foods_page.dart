@@ -1,3 +1,4 @@
+import 'package:admin/shoppinglist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -50,7 +51,7 @@ class _FoodTypePageState extends State<FoodPage> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FoodPage()),
+                  MaterialPageRoute(builder: (context) => ShoppingListPage()),
                 );
               },
             ),

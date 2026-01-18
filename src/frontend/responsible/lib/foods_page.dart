@@ -3,6 +3,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:responsible/models/foods.dart';
 import 'package:flutter/foundation.dart';
+import 'package:responsible/shoppinglist_page.dart';
 
 class FoodPage extends StatefulWidget {
   const FoodPage({super.key});
@@ -49,7 +50,7 @@ class _FoodTypePageState extends State<FoodPage> {
                 Navigator.pop(context);
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => FoodPage()),
+                  MaterialPageRoute(builder: (context) => ShoppingListPage()),
                 );
               },
             ),
