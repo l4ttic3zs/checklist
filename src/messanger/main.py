@@ -19,6 +19,7 @@ class ConnectionManager:
     async def broadcast(self, message: str):
         for connection in self.active_connections:
             try:
+                print("asdasdasd")
                 await connection.send_text(message)
             except:
                 pass

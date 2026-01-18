@@ -25,6 +25,7 @@ class _ShoppingListPageState extends State<ShoppingListPage> {
     channel = WebSocketChannel.connect(Uri.parse(wsUrl));
 
     channel.stream.listen((message) {
+      print(message);
       _showAlert(message);
     });
   }
