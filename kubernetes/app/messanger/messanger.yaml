@@ -18,16 +18,3 @@ spec:
         image: docker.io/bmzsombi/checklist-messanger:latest
         ports:
         - containerPort: 80
-        env:
-        - name: RABBITMQ_USER
-          valueFrom:
-            secretKeyRef:
-              name: checklist-purchase-queue-default-user
-              key: username
-        - name: RABBITMQ_PASS
-          valueFrom:
-            secretKeyRef:
-              name: checklist-purchase-queue-default-user
-              key: password
-        - name: RABBITMQ_HOST
-          value: "checklist-purchase-queue"

@@ -30,6 +30,15 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
+      - name: Build and push messanger
+        uses: docker/build-push-action@v5
+        with:
+          context: ./src/messanger
+          push: true
+          tags: bmzsombi/checklist-messanger:latest
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
+
       - name: Build and push catalog
         uses: docker/build-push-action@v5
         with:
@@ -56,14 +65,3 @@ jobs:
           tags: bmzsombi/checklist-shoppinglist:latest
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-      - name: Build and push messanger
-        uses: docker/build-push-action@v5
-        with:
-          context: ./src/messanger/
-          push: true
-          tags: bmzsombi/checklist-messanger:latest
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      

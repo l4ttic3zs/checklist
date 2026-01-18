@@ -2,10 +2,14 @@ import 'package:admin/shoppinglist_page.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'dart:async';
+import 'dart:io';
 import 'package:admin/models/food_types.dart';
 import 'package:admin/foods_page.dart';
 import 'package:flutter/foundation.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:retry/retry.dart';
+import 'package:admin/circuitbreaker.dart';
 
 class FoodTypePage extends StatefulWidget {
   const FoodTypePage({super.key});
@@ -15,8 +19,48 @@ class FoodTypePage extends StatefulWidget {
 }
 
 class _FoodTypePageState extends State<FoodTypePage> {
-  PlatformFile? _pickedFile;
 
+  final MyCircuitBreaker _apiBreaker = MyCircuitBreaker(threshold: 3);
+
+  Future<void> _sendMessage() async {
+    if (_apiBreaker.isOpen) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Circuit Breaker nyitva, az üzenet nem küldhető el.')),
+      );
+      return;
+    }
+
+    final String url = kIsWeb 
+      ? '/message' 
+      : 'http://192.168.10.60/message';
+
+    try {
+      final response = await retry(
+        () => http.post(
+          Uri.parse(url),
+          headers: {"Content-Type": "application/json"},
+          body: jsonEncode({"msg": "Hello from Flutter", "timestamp": DateTime.now().toString()}),
+        ).timeout(const Duration(seconds: 5)),
+        retryIf: (e) => e is SocketException || e is TimeoutException,
+        maxAttempts: 2,
+      );
+
+      if (response.statusCode == 200) {
+        _apiBreaker.recordSuccess();
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Message sent')),
+        );
+      } else {
+        _apiBreaker.recordFailure();
+        throw Exception('Error while sending');
+      }
+    } catch (e) {
+      _apiBreaker.recordFailure();
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Sending error: $e')),
+      );
+    }
+  }
 
   Future<List<FoodType>> fetchFoodTypes() async {
     final String url = kIsWeb 
@@ -201,10 +245,23 @@ class _FoodTypePageState extends State<FoodTypePage> {
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _showAddDialog,
-        backgroundColor: Colors.deepPurple,
-        child: const Icon(Icons.add, color: Colors.white),
+      floatingActionButton: Column(
+        mainAxisAlignment: MainAxisAlignment.end,
+        children: [
+          FloatingActionButton(
+            onPressed: _sendMessage,
+            backgroundColor: Colors.orange,
+            heroTag: "btn1",
+            child: const Icon(Icons.send, color: Colors.white),
+          ),
+          const SizedBox(height: 10),
+          FloatingActionButton(
+            onPressed: _showAddDialog,
+            backgroundColor: Colors.deepPurple,
+            heroTag: "btn2",
+            child: const Icon(Icons.add, color: Colors.white),
+          ),
+        ],
       ),
     );
   }

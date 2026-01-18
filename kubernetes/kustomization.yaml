@@ -15,8 +15,8 @@ resources:
 - app/shoppinglist/shoppinglist.yaml
 - app/shoppinglist/shoppinglist-service.yaml
 
-# - app/messanger/messanger.yaml
-# - app/messanger/messanger-service.yaml
+- app/messanger/messanger.yaml
+- app/messanger/messanger-service.yaml
 
 - app/frontend/admin/admin.yaml
 - app/frontend/admin/admin-service.yaml

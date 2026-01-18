@@ -1,10 +1,9 @@
-FROM docker.io/golang:latest as build
-COPY . /
-WORKDIR /
+FROM python:3.10-slim
 
-RUN CGO_ENABLED=0 GOOS=linux go build -a -o messanger
+WORKDIR /app
 
-## Stage 2
-FROM scratch
-COPY --from=build /messanger .
-CMD [ "/messanger" ]
+RUN pip install --no-cache-dir fastapi uvicorn
+
+COPY . .
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "80"]
