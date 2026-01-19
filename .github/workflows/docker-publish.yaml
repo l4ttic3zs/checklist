@@ -21,12 +21,16 @@ jobs:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
           password: ${{ secrets.DOCKERHUB_TOKEN }}
 
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Build and push Flutter Admin frontend
         uses: docker/build-push-action@v5
         with:
           context: ./src/frontend/admin/
           push: true
-          tags: bmzsombi/checklist-admin:latest
+          tags: bmzsombi/checklist-admin:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -35,7 +39,7 @@ jobs:
         with:
           context: ./src/frontend/responsible/
           push: true
-          tags: bmzsombi/checklist-responsible:latest
+          tags: bmzsombi/checklist-responsible:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -44,7 +48,7 @@ jobs:
         with:
           context: ./src/messanger
           push: true
-          tags: bmzsombi/checklist-messanger:latest
+          tags: bmzsombi/checklist-messanger:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -53,7 +57,7 @@ jobs:
         with:
           context: ./src/db/catalog/
           push: true
-          tags: bmzsombi/checklist-catalog:latest
+          tags: bmzsombi/checklist-catalog:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
       
@@ -62,7 +66,7 @@ jobs:
         with:
           context: ./src/db/inventory/
           push: true
-          tags: bmzsombi/checklist-inventory:latest
+          tags: bmzsombi/checklist-inventory:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
@@ -71,6 +75,26 @@ jobs:
         with:
           context: ./src/db/shoppinglist/
           push: true
-          tags: bmzsombi/checklist-shoppinglist:latest
+          tags: bmzsombi/checklist-shoppinglist:${{ steps.vars.outputs.sha_short }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
+
+      - name: Update Kustomization
+        run: |
+          curl -s "https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh" | bash
+          
+          ./kustomize edit set image bmzsombi/checklist-admin=bmzsombi/checklist-admin:${{ steps.vars.outputs.sha_short }}
+          ./kustomize edit set image bmzsombi/checklist-responsible=bmzsombi/checklist-responsible:${{ steps.vars.outputs.sha_short }}
+          ./kustomize edit set image bmzsombi/checklist-messanger=bmzsombi/checklist-messanger:${{ steps.vars.outputs.sha_short }}
+          ./kustomize edit set image bmzsombi/checklist-catalog=bmzsombi/checklist-catalog:${{ steps.vars.outputs.sha_short }}
+          ./kustomize edit set image bmzsombi/checklist-inventory=bmzsombi/checklist-inventory:${{ steps.vars.outputs.sha_short }}
+          ./kustomize edit set image bmzsombi/checklist-shoppinglist=bmzsombi/checklist-shoppinglist:${{ steps.vars.outputs.sha_short }}
+
+      - name: Commit and Push changes
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add kustomization.yaml
+          git commit -m "chore: update images in kustomization.yaml [skip ci]"
+          git push
+      
