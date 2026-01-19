@@ -1,0 +1,22 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "checklist.fullname" . }}-messanger
+  labels:
+    app: {{ include "checklist.name" . }}-messanger
+spec:
+  replicas: {{ .Values.messanger.replicaCount }}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ include "checklist.name" . }}-messanger
+  template:
+    metadata:
+      labels:
+        app: {{ include "checklist.name" . }}-messanger
+    spec:
+      containers:
+      - name: messanger
+        image: "{{ .Values.messanger.image.repository }}:{{ .Values.messanger.image.tag }}"
+        ports:
+        - containerPort: 80

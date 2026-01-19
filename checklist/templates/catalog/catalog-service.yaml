@@ -1,0 +1,16 @@
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "checklist.fullname" . }}-catalog-service
+  labels:
+    app: {{ include "checklist.name" . }}-catalog
+spec:
+  type: {{ .Values.catalog.service.type }}
+  selector:
+    app: {{ include "checklist.name" . }}-catalog
+  ports:
+  - name: http-port
+    port: {{ .Values.catalog.service.port }}
+    protocol: TCP
+    targetPort: {{ .Values.catalog.service.targetPort }}

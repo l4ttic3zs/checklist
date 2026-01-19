@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "checklist.fullname" . }}-catalog
+  labels:
+    {{- include "checklist.labels" . | nindent 4 }}
+    component: catalog
+spec:
+  replicas: {{ .Values.catalog.replicaCount }}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ include "checklist.name" . }}-catalog
+  template:
+    metadata:
+      labels:
+        app: {{ include "checklist.name" . }}-catalog
+    spec:
+      containers:
+      - name: catalog
+        image: "{{ .Values.catalog.image.repository }}:{{ .Values.catalog.image.tag }}"
+        imagePullPolicy: {{ .Values.catalog.image.pullPolicy }}
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "{{ .Values.global.database.host }}-rw"
+        - name: DB_NAME
+          value: {{ .Values.global.database.name | quote }}
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.database.secretName }}
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.database.secretName }}
+              key: password
+        volumeMounts:
+        - name: image-storage
+          mountPath: {{ .Values.catalog.persistence.mountPath }}
+      volumes:
+      - name: image-storage
+        persistentVolumeClaim:
+          claimName: {{ .Values.catalog.persistence.pvcName }}

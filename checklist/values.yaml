@@ -1,0 +1,81 @@
+# values.yaml
+global:
+  database:
+    host: "checklist-database"
+    name: "checklist_db"
+    secretName: "checklist-database-app"
+  rabbitmq:
+    host: "checklist-queue"
+    secretName: "checklist-queue-default-user"
+
+catalog:
+  replicaCount: 1
+  image:
+    repository: docker.io/bmzsombi/checklist-catalog
+    tag: latest
+  persistence:
+    enabled: true
+    pvcName: "checklist-images-pvc"
+    mountPath: "/app/uploads"
+    storageClass: ""
+    size: 1Gi
+    accessMode: ReadWriteOnce
+  service:
+    type: LoadBalancer
+    port: 80
+
+inventory:
+  replicaCount: 1
+  image:
+    repository: docker.io/bmzsombi/checklist-inventory
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 80
+
+shoppinglist:
+  replicaCount: 1
+  image:
+    repository: docker.io/bmzsombi/checklist-shoppinglist
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 80
+
+messanger:
+  replicaCount: 1
+  image:
+    repository: docker.io/bmzsombi/checklist-messanger
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 80
+
+admin:
+  replicaCount: 1
+  image:
+    repository: docker.io/bmzsombi/checklist-admin
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 80
+
+responsible:
+  replicaCount: 1
+  image:
+    repository: docker.io/bmzsombi/checklist-responsible
+    tag: latest
+  service:
+    type: LoadBalancer
+    port: 80
+
+infrastructure:
+  database:
+    instances: 3
+    storage: 1Gi
+
+cloudnative-pg:
+  enabled: false
+
+rabbitmq-cluster-operator:
+  enabled: false

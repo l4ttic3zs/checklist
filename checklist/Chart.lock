@@ -1,0 +1,9 @@
+dependencies:
+- name: cloudnative-pg
+  repository: https://cloudnative-pg.github.io/charts
+  version: 0.27.0
+- name: rabbitmq
+  repository: https://charts.bitnami.com/bitnami
+  version: 16.0.14
+digest: sha256:c2dab5bdfdac7e1a7251fa6fbc4e680aaf92c8894a7d2d5b1d82221446fb76ff
+generated: "2026-01-19T10:26:33.855914419+01:00"

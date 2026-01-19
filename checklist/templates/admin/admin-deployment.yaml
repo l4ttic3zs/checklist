@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "checklist.fullname" . }}-admin
+  labels:
+    {{- include "checklist.labels" . | nindent 4 }}
+    component: admin
+spec:
+  replicas: {{ .Values.admin.replicaCount }}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ include "checklist.name" . }}-admin
+  template:
+    metadata:
+      labels:
+        app: {{ include "checklist.name" . }}-admin
+    spec:
+      containers:
+      - name: admin
+        image: "{{ .Values.admin.image.repository }}:{{ .Values.admin.image.tag }}"
+        imagePullPolicy: {{ .Values.admin.image.pullPolicy }}
+        ports:
+        - containerPort: 80

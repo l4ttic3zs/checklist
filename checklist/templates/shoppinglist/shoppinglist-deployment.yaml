@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "checklist.fullname" . }}-shoppinglist
+  labels:
+    app: {{ include "checklist.name" . }}-shoppinglist
+spec:
+  replicas: {{ .Values.shoppinglist.replicaCount }}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ include "checklist.name" . }}-shoppinglist
+  template:
+    metadata:
+      labels:
+        app: {{ include "checklist.name" . }}-shoppinglist
+    spec:
+      containers:
+      - name: shoppinglist
+        image: "{{ .Values.shoppinglist.image.repository }}:{{ .Values.shoppinglist.image.tag }}"
+        ports:
+        - containerPort: 80
+        env:
+        - name: DB_HOST
+          value: "{{ .Values.global.database.host }}-rw"
+        - name: DB_NAME
+          value: {{ .Values.global.database.name | quote }}
+        - name: DB_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.database.secretName }}
+              key: user
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.database.secretName }}
+              key: password
+        - name: RABBITMQ_HOST
+          value: {{ .Values.global.rabbitmq.host | quote }}
+        - name: RABBITMQ_USER
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.rabbitmq.secretName }}
+              key: username
+        - name: RABBITMQ_PASS
+          valueFrom:
+            secretKeyRef:
+              name: {{ .Values.global.rabbitmq.secretName }}
+              key: password

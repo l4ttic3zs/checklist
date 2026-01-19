@@ -1,0 +1,17 @@
+{{- if .Values.catalog.persistence.enabled -}}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ .Values.catalog.persistence.pvcName }}
+  labels:
+    app: {{ include "checklist.name" . }}-catalog
+spec:
+  accessModes:
+    - {{ .Values.catalog.persistence.accessMode | quote }}
+  resources:
+    requests:
+      storage: {{ .Values.catalog.persistence.size | quote }}
+  {{- if .Values.catalog.persistence.storageClass }}
+  storageClassName: {{ .Values.catalog.persistence.storageClass | quote }}
+  {{- end }}
+{{- end }}

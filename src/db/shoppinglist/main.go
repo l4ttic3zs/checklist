@@ -58,6 +58,24 @@ func main() {
 		RMQ: rmqConn,
 	}
 
+	ch, err := app.RMQ.Channel()
+	if err != nil {
+		log.Println("failed to open channel to mq")
+	}
+
+	_, err = ch.QueueDeclare(
+		"purchase_queue",
+		true,
+		false,
+		false,
+		false,
+		nil,
+	)
+	if err != nil {
+		log.Fatalf("failed to declare queue: %v", err)
+	}
+	ch.Close()
+
 	log.Println("Starting server on port 80...")
 	http.HandleFunc("/shoppinglist", app.GetShoppingListItems)
 	http.HandleFunc("/shoppinglist/item", app.HandleItem)

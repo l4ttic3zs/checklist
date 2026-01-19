@@ -1,0 +1,17 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: {{ .Values.global.database.host }}
+spec:
+  instances: {{ .Values.infrastructure.database.instances }}
+  
+  storage:
+    size: {{ .Values.infrastructure.database.storage }}
+
+  bootstrap:
+    initdb:
+      database: {{ .Values.global.database.name }}
+      owner: db_user
+
+  monitoring:
+    enablePodMonitor: true

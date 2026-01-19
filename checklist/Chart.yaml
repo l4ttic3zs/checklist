@@ -1,0 +1,16 @@
+apiVersion: v2
+name: checklist
+description: A Helm chart for Kubernetes
+type: application
+version: 1.0.0
+appVersion: "1.0.0"
+dependencies:
+  - name: cloudnative-pg
+    version: "0.27.0"
+    repository: "https://cloudnative-pg.github.io/charts"
+    condition: cloudnative-pg.enabled
+
+  - name: rabbitmq
+    version: "16.0.14"
+    repository: "https://charts.bitnami.com/bitnami"
+    condition: rabbitmq-cluster-operator.enabled

@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ include "checklist.fullname" . }}-responsible
+  labels:
+    {{- include "checklist.labels" . | nindent 4 }}
+    component: responsible
+spec:
+  replicas: {{ .Values.responsible.replicaCount }}
+  revisionHistoryLimit: 2
+  selector:
+    matchLabels:
+      app: {{ include "checklist.name" . }}-responsible
+  template:
+    metadata:
+      labels:
+        app: {{ include "checklist.name" . }}-responsible
+    spec:
+      containers:
+      - name: responsible
+        image: "{{ .Values.responsible.image.repository }}:{{ .Values.responsible.image.tag }}"
+        imagePullPolicy: {{ .Values.responsible.image.pullPolicy }}
+        ports:
+        - containerPort: 80
