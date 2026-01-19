@@ -85,12 +85,12 @@ jobs:
           
           cd kubernetes
 
-          ./kustomize edit set image bmzsombi/checklist-admin=bmzsombi/checklist-admin:${{ steps.vars.outputs.sha_short }}
-          ./kustomize edit set image bmzsombi/checklist-responsible=bmzsombi/checklist-responsible:${{ steps.vars.outputs.sha_short }}
-          ./kustomize edit set image bmzsombi/checklist-messanger=bmzsombi/checklist-messanger:${{ steps.vars.outputs.sha_short }}
-          ./kustomize edit set image bmzsombi/checklist-catalog=bmzsombi/checklist-catalog:${{ steps.vars.outputs.sha_short }}
-          ./kustomize edit set image bmzsombi/checklist-inventory=bmzsombi/checklist-inventory:${{ steps.vars.outputs.sha_short }}
-          ./kustomize edit set image bmzsombi/checklist-shoppinglist=bmzsombi/checklist-shoppinglist:${{ steps.vars.outputs.sha_short }}
+          ../kustomize edit set image bmzsombi/checklist-admin=bmzsombi/checklist-admin:${{ steps.vars.outputs.sha_short }}
+          ../kustomize edit set image bmzsombi/checklist-responsible=bmzsombi/checklist-responsible:${{ steps.vars.outputs.sha_short }}
+          ../kustomize edit set image bmzsombi/checklist-messanger=bmzsombi/checklist-messanger:${{ steps.vars.outputs.sha_short }}
+          ../kustomize edit set image bmzsombi/checklist-catalog=bmzsombi/checklist-catalog:${{ steps.vars.outputs.sha_short }}
+          ../kustomize edit set image bmzsombi/checklist-inventory=bmzsombi/checklist-inventory:${{ steps.vars.outputs.sha_short }}
+          ../kustomize edit set image bmzsombi/checklist-shoppinglist=bmzsombi/checklist-shoppinglist:${{ steps.vars.outputs.sha_short }}
 
       - name: Commit and Push changes
         run: |
