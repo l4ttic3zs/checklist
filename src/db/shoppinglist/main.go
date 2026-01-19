@@ -74,7 +74,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("failed to declare queue: %v", err)
 	}
-	ch.Close()
+	defer ch.Close()
 
 	log.Println("Starting server on port 80...")
 	http.HandleFunc("/shoppinglist", app.GetShoppingListItems)
