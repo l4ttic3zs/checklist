@@ -8,7 +8,6 @@ spec:
   selector:
     app: checklist-admin
   type: LoadBalancer
-  LoadBalancerIP: 192.168.10.67
   ports:
   - name: http-port
     port: 80
