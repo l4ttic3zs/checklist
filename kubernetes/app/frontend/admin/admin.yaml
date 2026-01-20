@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: checklist-admin
-        image: docker.io/bmzsombi/checklist-admin:latest
+        image: docker.io/bmzsombi/checklist-admin
         ports:
         - containerPort: 80
         

@@ -15,6 +15,6 @@ spec:
     spec:
       containers:
       - name: checklist-messanger
-        image: docker.io/bmzsombi/checklist-messanger:latest
+        image: docker.io/bmzsombi/checklist-messanger
         ports:
         - containerPort: 80

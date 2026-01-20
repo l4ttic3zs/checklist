@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: checklist-inventory
-        image: docker.io/bmzsombi/checklist-inventory:latest
+        image: docker.io/bmzsombi/checklist-inventory
         ports:
         - containerPort: 80
         env:

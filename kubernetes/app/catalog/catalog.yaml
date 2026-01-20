@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: checklist-catalog
-        image: docker.io/bmzsombi/checklist-catalog:latest
+        image: docker.io/bmzsombi/checklist-catalog
         ports:
         - containerPort: 80
         env:
