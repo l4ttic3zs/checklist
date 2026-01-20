@@ -19,19 +19,19 @@ resources:
 images:
 - name: bmzsombi/checklist-admin
   newName: bmzsombi/checklist-admin
-  newTag: 5bf3dde
+  newTag: 60aa46e
 - name: bmzsombi/checklist-catalog
   newName: bmzsombi/checklist-catalog
-  newTag: 5bf3dde
+  newTag: 60aa46e
 - name: bmzsombi/checklist-inventory
   newName: bmzsombi/checklist-inventory
-  newTag: 5bf3dde
+  newTag: 60aa46e
 - name: bmzsombi/checklist-messanger
   newName: bmzsombi/checklist-messanger
-  newTag: 5bf3dde
+  newTag: 60aa46e
 - name: bmzsombi/checklist-responsible
   newName: bmzsombi/checklist-responsible
-  newTag: 5bf3dde
+  newTag: 60aa46e
 - name: bmzsombi/checklist-shoppinglist
   newName: bmzsombi/checklist-shoppinglist
-  newTag: 5bf3dde
+  newTag: 60aa46e
