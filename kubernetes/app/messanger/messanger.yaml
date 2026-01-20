@@ -13,8 +13,11 @@ spec:
       labels:
         app: checklist-messanger
     spec:
+      imagePullSecrets:
+      - name: acr-secret
       containers:
       - name: checklist-messanger
-        image: docker.io/bmzsombi/checklist-messanger
+        image: bmzsombi/checklist-messanger
         ports:
         - containerPort: 80
+      
