@@ -19,19 +19,19 @@ resources:
 images:
 - name: bmzsombi/checklist-admin
   newName: bmzsombi/checklist-admin
-  newTag: 5663ba2
+  newTag: 25678f5
 - name: bmzsombi/checklist-catalog
   newName: bmzsombi/checklist-catalog
-  newTag: 5663ba2
+  newTag: 25678f5
 - name: bmzsombi/checklist-inventory
   newName: bmzsombi/checklist-inventory
-  newTag: 5663ba2
+  newTag: 25678f5
 - name: bmzsombi/checklist-messanger
   newName: nagyhfcax1rr.azurecr.io/checklist-messanger
-  newTag: 5663ba2
+  newTag: 25678f5
 - name: bmzsombi/checklist-responsible
   newName: bmzsombi/checklist-responsible
-  newTag: 5663ba2
+  newTag: 25678f5
 - name: bmzsombi/checklist-shoppinglist
   newName: bmzsombi/checklist-shoppinglist
-  newTag: 5663ba2
+  newTag: 25678f5
